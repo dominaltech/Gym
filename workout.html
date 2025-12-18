@@ -348,16 +348,24 @@
     }
 
     .exercise-icon {
-      width: 70px;
-      height: 70px;
-      border-radius: 16px;
-      background: #ffffff;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
+  width: 350px;
+  height: 350px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.exercise-icon:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
 
     .exercise-icon svg {
       width: 70%;
@@ -788,9 +796,10 @@
       }
       
       .exercise-icon {
-        width: 60px;
-        height: 60px;
-      }
+  width: 300px;
+  height: 300px;
+}
+
       
       .exercise-actions {
         align-items: flex-start;
@@ -853,8 +862,8 @@
       }
       
       .exercise-icon {
-        width: 90px;
-        height: 90px;
+        width: 450px;
+        height: 450px;
       }
       
       .exercise-name {
@@ -929,8 +938,8 @@
       }
       
       .exercise-icon {
-        width: 110px;
-        height: 110px;
+        width: 550px;
+        height: 550px;
       }
       
       .exercise-name {
@@ -1111,7 +1120,10 @@
 
         <div class="form-field">
           <label for="imageUrl">Exercise image URL</label>
-          <input id="imageUrl" type="url" placeholder="Paste direct image URL (will be stored)" />
+          <input id="imageUrl" type="text" placeholder="Paste image URL or leave empty" />
+<input id="imageFileInput" type="file" accept="image/*" style="display: none;" />
+
+
           <div class="form-hint">Upload your exercise image to cloud storage and paste the direct URL here.</div>
         </div>
 
@@ -1241,6 +1253,7 @@
   let exercisesByDay = JSON.parse(JSON.stringify(defaultExercises));
 
   const timers = {};
+  let currentEditingExerciseId = null;
 
   // --- DOM REFS ----------------------------------------------------------
   const splitRow = document.getElementById("splitRow");
@@ -1269,6 +1282,43 @@
   const inputReps = document.getElementById("reps");
   const inputTimeSeconds = document.getElementById("timeSeconds");
   const inputNotes = document.getElementById("notes");
+  const imageFileInput = document.getElementById("imageFileInput");
+
+  // --- IMAGE UPLOAD HANDLING ---------------------------------------------
+
+  imageFileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        if (currentEditingExerciseId) {
+          // Update existing exercise
+          updateExerciseImage(currentEditingExerciseId, event.target.result);
+          currentEditingExerciseId = null;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  function updateExerciseImage(exerciseId, base64Image) {
+    // Find and update the exercise
+    Object.keys(exercisesByDay).forEach(dayKey => {
+      const exercise = exercisesByDay[dayKey].find(ex => ex.id === exerciseId);
+      if (exercise) {
+        exercise.imageUrl = base64Image;
+      }
+    });
+    
+    // Re-render
+    renderExercisesForActive();
+    updateSummary();
+  }
+
+  function triggerImageUploadForExercise(exerciseId) {
+    currentEditingExerciseId = exerciseId;
+    imageFileInput.click();
+  }
 
   // --- INIT --------------------------------------------------------------
 
@@ -1408,7 +1458,6 @@
     if (viewMode === "days") {
       exercises = exercisesByDay[activeDayKey] || [];
     } else {
-      // Collect all exercises matching the muscle group
       Object.values(exercisesByDay).forEach(dayExercises => {
         dayExercises.forEach(ex => {
           if (ex.muscle.toLowerCase().includes(activeMuscleKey)) {
@@ -1443,11 +1492,22 @@
     // ICON
     const iconWrapper = document.createElement("div");
     iconWrapper.className = "exercise-icon";
+    iconWrapper.style.cursor = "pointer";
+    iconWrapper.title = "Click to add/change image";
+
+    // Add click handler to icon
+    iconWrapper.addEventListener("click", (e) => {
+      e.stopPropagation();
+      triggerImageUploadForExercise(exercise.id);
+    });
 
     if (exercise.imageUrl && exercise.imageUrl.trim().length > 0) {
       const img = document.createElement("img");
       img.src = exercise.imageUrl;
       img.alt = exercise.name;
+      img.style.width = "100%";
+      img.style.height = "100%";
+      img.style.objectFit = "cover";
       iconWrapper.appendChild(img);
     } else {
       // Default SVG
