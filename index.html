@@ -760,10 +760,12 @@
             <div class="nav-logo">SLIM GYM</div>
         </div>
         <ul class="nav-menu">
-            <li><a href="#" class="nav-item active"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="index.html" class="nav-item active"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="ai.html" class="nav-item"><i class="fas fa-robot"></i> AI Coach</a></li>
             <li><a href="workout.html" class="nav-item"><i class="fas fa-dumbbell"></i> Exercises</a></li>
             <li><a href="diet.html" class="nav-item"><i class="fas fa-apple-alt"></i> Diet Plans</a></li>
+            <li><a href="bmi.html" class="nav-item"><i class="fas fa-calculator"></i> Analysis</a></li>
+            <li><a href="health.html" class="nav-item"><i class="fas fa-stethoscope"></i> Checkup</a></li>
             <li><a href="#" class="nav-item"><i class="fas fa-chart-line"></i> Progress</a></li>
             <li><a href="#" class="nav-item"><i class="fas fa-users"></i> Community</a></li>
             <li><a href="#" class="nav-item"><i class="fas fa-cog"></i> Settings</a></li>
@@ -783,28 +785,28 @@
                 <div class="slide-content">
                     <h2 class="slide-title">UNLOCK YOUR POTENTIAL</h2>
                     <p class="slide-subtitle">State-of-the-art facilities with cutting-edge equipment</p>
-                    <a href="#" class="cta-button">Start Your Journey</a>
+                    <a href="workout.html" class="cta-button">Start Your Journey</a>
                 </div>
             </div>
             <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
                 <div class="slide-content">
                     <h2 class="slide-title">PERSONALIZED TRAINING</h2>
                     <p class="slide-subtitle">Expert trainers create programs tailored to your goals</p>
-                    <a href="#" class="cta-button">Get Started</a>
+                    <a href="workout.html" class="cta-button">Get Started</a>
                 </div>
             </div>
             <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1519710164239-da542f458a22?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80');">
                 <div class="slide-content">
                     <h2 class="slide-title">ACHIEVE GREATNESS</h2>
                     <p class="slide-subtitle">Join thousands who transformed their bodies and lives</p>
-                    <a href="#" class="cta-button">Join Now</a>
+                    <a href="workout.html" class="cta-button">Join Now</a>
                 </div>
             </div>
             <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1531973576160-7125cd663d86?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
                 <div class="slide-content">
                     <h2 class="slide-title">NUTRITION EXCELLENCE</h2>
                     <p class="slide-subtitle">Science-backed nutrition plans for optimal results</p>
-                    <a href="#" class="cta-button">Learn More</a>
+                    <a href="diet.html" class="cta-button">Learn More</a>
                 </div>
             </div>
             <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1518621030045-942f23f998ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
@@ -818,14 +820,14 @@
                 <div class="slide-content">
                     <h2 class="slide-title">24/7 ACCESS</h2>
                     <p class="slide-subtitle">Train whenever you want, achieve whenever you can</p>
-                    <a href="#" class="cta-button">Membership</a>
+                    <a href="workout.html" class="cta-button">Membership</a>
                 </div>
             </div>
             <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1571019614205-4438f25f9ebe?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
                 <div class="slide-content">
                     <h2 class="slide-title">FUTURE READY</h2>
                     <p class="slide-subtitle">AI-powered training with futuristic technology</p>
-                    <a href="AI.html" class="cta-button">AI Coach</a>
+                    <a href="ai.html" class="cta-button">AI Coach</a>
                 </div>
             </div>
         </div>
@@ -905,21 +907,29 @@
 
     <!-- Bottom Taskbar -->
     <nav class="bottom-taskbar">
-        <a href="#" class="taskbar-item active" data-page="home">
+        <a href="index.html" class="taskbar-item active" data-page="home">
             <i class="fas fa-home"></i>
             <span>Home</span>
         </a>
-        <a href="AI.html" class="taskbar-item" data-page="ai">
+        <a href="ai.html" class="taskbar-item" data-page="ai">
             <i class="fas fa-robot"></i>
             <span>AI</span>
         </a>
-        <a href="workout.html" class="taskbar-item" data-page="exercise">
+        <a href="workout.html" class="taskbar-item" data-page="workout">
             <i class="fas fa-dumbbell"></i>
-            <span>Exercise</span>
+            <span>Workout</span>
         </a>
-        <a href="Diet.html" class="taskbar-item" data-page="diet">
-            <i class="fas fa-apple-alt"></i>
-            <span>Diet</span>
+        <a href="bmi.html" class="taskbar-item" data-page="analysis">
+            <i class="fas fa-calculator"></i>
+            <span>Analysis</span>
+        </a>
+        <a href="health.html" class="taskbar-item" data-page="checkup">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display: block; margin: 0 auto 4px;">
+                <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                <circle cx="17" cy="12" r="1.5"/>
+                <circle cx="17" cy="16" r="1.5"/>
+            </svg>
+            <span>Checkup</span>
         </a>
     </nav>
 
