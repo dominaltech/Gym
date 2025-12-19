@@ -335,36 +335,35 @@
     }
 
     .exercise-card {
-      position: relative;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      column-gap: 12px;
-      padding: 12px 12px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      background: #fdfdfd;
-      box-shadow: var(--shadow-soft-2);
-      align-items: center;
-    }
-
-    .exercise-icon {
-  width: 350px;
-  height: 350px;
-  border-radius: 20px;
-  background: #ffffff;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  row-gap: 10px;
+  padding: 12px 12px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  background: #fdfdfd;
+  box-shadow: var(--shadow-soft-2);
+  align-items: start;
 }
 
-.exercise-icon:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+.exercise-icon {
+  grid-row: 1 / 3;
 }
+
+.exercise-details {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.exercise-actions {
+  grid-column: 2;
+  grid-row: 2;
+  align-items: flex-start;
+}
+
 
 
     .exercise-icon svg {
@@ -378,11 +377,7 @@
       object-fit: cover;
     }
 
-    .exercise-details {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+    
 
     .exercise-title-row {
       display: flex;
@@ -420,12 +415,7 @@
       background: #ffffff;
     }
 
-    .exercise-actions {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 6px;
-    }
+    
 
     .timer-display {
       font-size: 14px;
@@ -782,30 +772,31 @@
 
     /* Small mobile */
     @media (max-width: 375px) {
-      header.app-header {
-        padding: 12px 12px 8px;
-      }
-      
-      main.app-main {
-        padding: 8px 12px 16px;
-      }
-      
-      .exercise-card {
-        grid-template-columns: 1fr;
-        row-gap: 8px;
-      }
-      
-      .exercise-icon {
-  width: 300px;
-  height: 300px;
+  .exercise-card {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    row-gap: 10px;
+  }
+  
+  .exercise-icon {
+    grid-row: 1;
+    grid-column: 1;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .exercise-details {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  
+  .exercise-actions {
+    grid-column: 1;
+    grid-row: 3;
+  }
 }
 
-      
-      .exercise-actions {
-        align-items: flex-start;
-        margin-top: 4px;
-      }
-    }
 
     /* Tablet and up */
     @media (min-width: 768px) {
@@ -988,10 +979,14 @@
       </div>
     </div>
     <div class="header-actions">
-      <button class="mode-toggle-btn" id="modeToggleBtn">Mode: Days</button>
-      <div class="chip-day" id="currentDayChip">Today • Mon</div>
-      <div class="header-avatar">U</div>
-    </div>
+  <button class="mode-toggle-btn" id="modeToggleBtn">Mode: Days</button>
+  <div class="chip-day" id="currentDayChip">Today • Mon</div>
+  <div class="user-profile-trigger" id="userProfileTrigger">
+    <img src="" id="userProfileImage" alt="User" style="display:none; width:30px; height:30px; border-radius:50%; object-fit:cover; border:1px solid #e5e5e5;">
+    <div class="header-avatar" id="userAvatarInitial">U</div>
+  </div>
+</div>
+
   </header>
 
   <!-- MAIN -->
@@ -1157,6 +1152,51 @@
   </div>
 </div>
 
+<!-- USER PROFILE MODAL -->
+<div class="exercise-form-backdrop" id="userProfileBackdrop" aria-hidden="true">
+  <div class="exercise-form-sheet" role="dialog" aria-modal="true" style="max-width: 500px;">
+    <div class="form-header-row">
+      <h3>User Profile</h3>
+      <button class="form-close-btn" id="closeUserProfile">Close</button>
+    </div>
+
+    <form id="userProfileForm">
+      <div class="form-grid">
+        <div style="text-align: center; margin-bottom: 12px;">
+          <div style="width: 120px; height: 120px; margin: 0 auto; border-radius: 50%; border: 2px solid #e5e5e5; overflow: hidden; background: #f5f5f5; cursor: pointer; position: relative;" id="profileImageContainer">
+            <img src="" id="profileImagePreview" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+            <div id="profileImagePlaceholder" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 700; color: #9333ea;">U</div>
+          </div>
+          <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+          <p style="font-size: 11px; color: #666; margin-top: 8px;">Click image to change</p>
+        </div>
+
+        <div class="form-field">
+          <label for="userName">Full Name</label>
+          <input id="userName" type="text" placeholder="Enter your name" />
+        </div>
+
+        <div class="form-field">
+          <label for="userEmail">Email (optional)</label>
+          <input id="userEmail" type="email" placeholder="your@email.com" />
+        </div>
+
+        <div class="form-field">
+          <label for="userGoal">Fitness Goal (optional)</label>
+          <input id="userGoal" type="text" placeholder="e.g., Build muscle, Lose weight" />
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" class="primary-submit-btn" style="width: 100%;">
+          <span>Save Profile</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
 <script>
   // --- DATA MODEL --------------------------------------------------------
 
@@ -1250,7 +1290,111 @@
 
   let activeDayKey = "mon";
   let activeMuscleKey = "back";
-  let exercisesByDay = JSON.parse(JSON.stringify(defaultExercises));
+ let exercisesByDay = loadExercisesFromStorage() || JSON.parse(JSON.stringify(defaultExercises));
+
+function loadExercisesFromStorage() {
+  const stored = localStorage.getItem('gymWorkoutExercises');
+  return stored ? JSON.parse(stored) : null;
+}
+
+function saveExercisesToStorage() {
+  localStorage.setItem('gymWorkoutExercises', JSON.stringify(exercisesByDay));
+}
+
+// User profile refs
+const userProfileTrigger = document.getElementById("userProfileTrigger");
+const userProfileBackdrop = document.getElementById("userProfileBackdrop");
+const closeUserProfile = document.getElementById("closeUserProfile");
+const userProfileForm = document.getElementById("userProfileForm");
+const profileImageContainer = document.getElementById("profileImageContainer");
+const profileImageInput = document.getElementById("profileImageInput");
+const profileImagePreview = document.getElementById("profileImagePreview");
+const profileImagePlaceholder = document.getElementById("profileImagePlaceholder");
+const userProfileImage = document.getElementById("userProfileImage");
+const userAvatarInitial = document.getElementById("userAvatarInitial");
+const userName = document.getElementById("userName");
+const userEmail = document.getElementById("userEmail");
+const userGoal = document.getElementById("userGoal");
+
+// Load user profile
+function loadUserProfile() {
+  const profile = localStorage.getItem('userProfile');
+  if (profile) {
+    const data = JSON.parse(profile);
+    userName.value = data.name || '';
+    userEmail.value = data.email || '';
+    userGoal.value = data.goal || '';
+    
+    if (data.image) {
+      profileImagePreview.src = data.image;
+      profileImagePreview.style.display = 'block';
+      profileImagePlaceholder.style.display = 'none';
+      userProfileImage.src = data.image;
+      userProfileImage.style.display = 'block';
+      userAvatarInitial.style.display = 'none';
+    }
+    
+    if (data.name) {
+      userAvatarInitial.textContent = data.name.charAt(0).toUpperCase();
+    }
+  }
+}
+
+// User profile handlers
+userProfileTrigger.addEventListener("click", () => {
+  userProfileBackdrop.classList.add("visible");
+});
+
+closeUserProfile.addEventListener("click", () => {
+  userProfileBackdrop.classList.remove("visible");
+});
+
+profileImageContainer.addEventListener("click", () => {
+  profileImageInput.click();
+});
+
+profileImageInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (file && file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      profileImagePreview.src = event.target.result;
+      profileImagePreview.style.display = 'block';
+      profileImagePlaceholder.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+userProfileForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  
+  const profile = {
+    name: userName.value.trim(),
+    email: userEmail.value.trim(),
+    goal: userGoal.value.trim(),
+    image: profileImagePreview.style.display === 'block' ? profileImagePreview.src : ''
+  };
+  
+  localStorage.setItem('userProfile', JSON.stringify(profile));
+  
+  if (profile.image) {
+    userProfileImage.src = profile.image;
+    userProfileImage.style.display = 'block';
+    userAvatarInitial.style.display = 'none';
+  }
+  
+  if (profile.name) {
+    userAvatarInitial.textContent = profile.name.charAt(0).toUpperCase();
+  }
+  
+  userProfileBackdrop.classList.remove("visible");
+});
+
+
+function saveExercisesToStorage() {
+  localStorage.setItem('gymWorkoutExercises', JSON.stringify(exercisesByDay));
+}
 
   const timers = {};
   let currentEditingExerciseId = null;
@@ -1301,19 +1445,22 @@
     }
   });
 
-  function updateExerciseImage(exerciseId, base64Image) {
-    // Find and update the exercise
-    Object.keys(exercisesByDay).forEach(dayKey => {
-      const exercise = exercisesByDay[dayKey].find(ex => ex.id === exerciseId);
-      if (exercise) {
-        exercise.imageUrl = base64Image;
-      }
-    });
-    
-    // Re-render
-    renderExercisesForActive();
-    updateSummary();
-  }
+ function updateExerciseImage(exerciseId, base64Image) {
+  // Find and update the exercise
+  Object.keys(exercisesByDay).forEach(dayKey => {
+    const exercise = exercisesByDay[dayKey].find(ex => ex.id === exerciseId);
+    if (exercise) {
+      exercise.imageUrl = base64Image;
+    }
+  });
+  
+  // SAVE TO LOCALSTORAGE - ADD THIS LINE
+  saveExercisesToStorage();
+  
+  // Re-render
+  renderExercisesForActive();
+  updateSummary();
+}
 
   function triggerImageUploadForExercise(exerciseId) {
     currentEditingExerciseId = exerciseId;
@@ -1322,14 +1469,16 @@
 
   // --- INIT --------------------------------------------------------------
 
-  function init() {
-    setTodayChip();
-    setActiveDayBySystemDate();
-    renderSplitPills();
-    renderDayTogglesInForm();
-    renderExercisesForActive();
-    updateSummary();
-  }
+ function init() {
+  setTodayChip();
+  setActiveDayBySystemDate();
+  renderSplitPills();
+  renderDayTogglesInForm();
+  renderExercisesForActive();
+  updateSummary();
+  loadUserProfile(); 
+}
+
 
   function setTodayChip() {
     const now = new Date();
@@ -1763,49 +1912,53 @@
     formDaysGrid.querySelectorAll(".day-toggle").forEach(btn => btn.classList.remove("active"));
   });
 
-  addExerciseForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = inputName.value.trim();
-    if (!name) {
-      errorNameEl.classList.add("visible");
-      return;
-    }
+ addExerciseForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = inputName.value.trim();
+  if (!name) {
+    errorNameEl.classList.add("visible");
+    return;
+  }
 
-    const muscle = inputMuscle.value.trim() || "General";
-    const imageUrl = inputImageUrl.value.trim();
-    const sets = parseInt(inputSets.value, 10) || 3;
-    const reps = parseInt(inputReps.value, 10) || 10;
-    const timeSeconds = parseInt(inputTimeSeconds.value, 10) || 60;
-    const notes = inputNotes.value.trim();
+  const muscle = inputMuscle.value.trim() || "General";
+  const imageUrl = inputImageUrl.value.trim();
+  const sets = parseInt(inputSets.value, 10) || 3;
+  const reps = parseInt(inputReps.value, 10) || 10;
+  const timeSeconds = parseInt(inputTimeSeconds.value, 10) || 60;
+  const notes = inputNotes.value.trim();
 
-    const selectedDays = Array.from(formDaysGrid.querySelectorAll(".day-toggle.active"))
-      .map(btn => btn.dataset.dayKey);
+  const selectedDays = Array.from(formDaysGrid.querySelectorAll(".day-toggle.active"))
+    .map(btn => btn.dataset.dayKey);
 
-    const daysToAssign = selectedDays.length ? selectedDays : [activeDayKey];
+  const daysToAssign = selectedDays.length ? selectedDays : [activeDayKey];
 
-    daysToAssign.forEach(dayKey => {
-      const exercise = {
-        id: dayKey + "-" + Date.now() + "-" + Math.floor(Math.random() * 999),
-        name,
-        muscle,
-        sets,
-        reps,
-        timeSeconds,
-        dayLabel: buildDayLabelFromKey(dayKey),
-        imageUrl,
-        notes
-      };
-      if (!exercisesByDay[dayKey]) exercisesByDay[dayKey] = [];
-      exercisesByDay[dayKey].push(exercise);
-    });
-
-    addExerciseForm.reset();
-    formDaysGrid.querySelectorAll(".day-toggle").forEach(btn => btn.classList.remove("active"));
-    closeForm();
-
-    renderExercisesForActive();
-    updateSummary();
+  daysToAssign.forEach(dayKey => {
+    const exercise = {
+      id: dayKey + "-" + Date.now() + "-" + Math.floor(Math.random() * 999),
+      name,
+      muscle,
+      sets,
+      reps,
+      timeSeconds,
+      dayLabel: buildDayLabelFromKey(dayKey),
+      imageUrl,
+      notes
+    };
+    if (!exercisesByDay[dayKey]) exercisesByDay[dayKey] = [];
+    exercisesByDay[dayKey].push(exercise);
   });
+
+  // SAVE TO LOCALSTORAGE - ADD THIS LINE
+  saveExercisesToStorage();
+
+  addExerciseForm.reset();
+  formDaysGrid.querySelectorAll(".day-toggle").forEach(btn => btn.classList.remove("active"));
+  closeForm();
+
+  renderExercisesForActive();
+  updateSummary();
+});
+
 
   function buildDayLabelFromKey(dayKey) {
     const cfg = dayConfigs.find(d => d.key === dayKey);
