@@ -509,62 +509,125 @@
         }
 
         /* Bottom Taskbar */
-        .bottom-taskbar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(30px);
-            border-top: 1px solid rgba(139, 92, 246, 0.3);
-            padding: 15px 0;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 100;
-            box-shadow: 0 -5px 30px rgba(0,0,0,0.1);
-        }
+        /* Bottom Taskbar Styles */
+.bottom-taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(147, 51, 234, 0.1);
+    padding: 12px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+}
 
-        .taskbar-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--gray);
-            font-size: 0.8rem;
-            font-weight: 500;
-            padding: 10px;
-            border-radius: 15px;
-            transition: all 0.3s ease;
-            position: relative;
-            pointer-events: auto !important;
-  z-index: 1000;
-        }
+.taskbar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #666;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 8px 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    flex: 1;
+    max-width: 80px;
+}
+
+.taskbar-item i,
+.taskbar-item svg {
+    font-size: 20px;
+    margin-bottom: 4px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.taskbar-item svg {
+    width: 20px;
+    height: 20px;
+}
+
+.taskbar-item:hover {
+    color: #9333ea;
+    transform: translateY(-2px);
+}
+
+.taskbar-item.active {
+    color: #9333ea;
+    font-weight: 600;
+}
+
+.taskbar-item.active i,
+.taskbar-item.active svg {
+    transform: scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(147, 51, 234, 0.3));
+}
+
+.taskbar-item.active::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 3px;
+    background: linear-gradient(90deg, #9333ea, #db2777);
+    border-radius: 0 0 3px 3px;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 375px) {
+    .taskbar-item {
+        font-size: 10px;
+        padding: 6px 8px;
+    }
+    
+    .taskbar-item i,
+    .taskbar-item svg {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+    }
+}
+
+@media (min-width: 768px) {
+    .bottom-taskbar {
+        padding: 14px 0;
+    }
+    
+    .taskbar-item {
+        font-size: 12px;
+        max-width: 100px;
+    }
+    
+    .taskbar-item i,
+    .taskbar-item svg {
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+    }
+}
+
         
-
-        .taskbar-item i {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-            transition: all 0.3s ease;
-        }
-
-        .taskbar-item.active,
-        .taskbar-item:hover {
-            color: var(--primary-purple);
-            transform: translateY(-3px);
-        }
-
-        .taskbar-item.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 3px;
-            background: var(--gradient-purple);
-            border-radius: 2px;
-        }
 
         /* Footer */
         .footer {
@@ -650,15 +713,7 @@
                 padding: 12px 0;
             }
 
-            .taskbar-item {
-                font-size: 0.7rem;
-                pointer-events: auto !important;
-  z-index: 1000;
-            }
-
-            .taskbar-item i {
-                font-size: 1.3rem;
-            }
+            
         }
 
         /* Scroll Animations */
@@ -911,37 +966,34 @@
     </section>
 
     <!-- Bottom Taskbar -->
-    <nav class="bottom-taskbar">
-        <a href="index.html" class="taskbar-item active" data-page="home">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-        </a>
-        <a href="diet.html" class="nav-item" data-page="diet">
-    <div class="nav-icon">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="#000">
-          <path d="M12 2C8.5 2 7 4 7 6.5c0 1.5.5 2.5 1 3.5L12 22l4-12c.5-1 1-2 1-3.5C17 4 15.5 2 12 2z"></path>
-          <circle cx="12" cy="7" r="1.5" fill="#fff"></circle>
+<nav class="bottom-taskbar">
+    <a href="index.html" class="taskbar-item active" data-page="home">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+    <a href="diet.html" class="taskbar-item" data-page="diet">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="margin-bottom: 4px;">
+            <path d="M12 2C8.5 2 7 4 7 6.5c0 1.5.5 2.5 1 3.5L12 22l4-12c.5-1 1-2 1-3.5C17 4 15.5 2 12 2z"></path>
+            <circle cx="12" cy="7" r="1.5" fill="#fff"></circle>
         </svg>
-    </div>
-    <span>Diet</span>
-</a>
-        <a href="workout.html" class="taskbar-item" data-page="workout">
-            <i class="fas fa-dumbbell"></i>
-            <span>Workout</span>
-        </a>
-        <a href="bmi.html" class="taskbar-item" data-page="analysis">
-            <i class="fas fa-calculator"></i>
-            <span>Analysis</span>
-        </a>
-        <a href="health.html" class="taskbar-item" data-page="checkup">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display: block; margin: 0 auto 4px;">
-                <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-                <circle cx="17" cy="12" r="1.5"/>
-                <circle cx="17" cy="16" r="1.5"/>
-            </svg>
-            <span>Checkup</span>
-        </a>
-    </nav>
+        <span>Diet</span>
+    </a>
+    <a href="workout.html" class="taskbar-item" data-page="workout">
+        <i class="fas fa-dumbbell"></i>
+        <span>Workout</span>
+    </a>
+    <a href="bmi.html" class="taskbar-item" data-page="analysis">
+        <i class="fas fa-calculator"></i>
+        <span>Analysis</span>
+    </a>
+    <a href="health.html" class="taskbar-item" data-page="checkup">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="margin-bottom: 4px;">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+            <path d="M3.22 12H9l2-4 2 8 2-4 1.5 2h4.78" stroke="currentColor" stroke-width="1.5" fill="none"></path>
+        </svg>
+        <span>Checkup</span>
+    </a>
+</nav>
 
     <!-- Footer -->
     <footer class="footer">
