@@ -949,6 +949,39 @@
     </footer>
 
     <script>
+
+
+        
+// Taskbar navigation
+document.querySelectorAll('.taskbar-item').forEach(item => {
+  item.addEventListener('click', function(e) {
+    const href = this.getAttribute('href');
+    
+    // Allow navigation if href is valid
+    if (href && href !== '#') {
+      // Let default link behavior work
+      return true;
+    }
+    
+    e.preventDefault();
+  });
+});
+
+// Side nav navigation
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', function(e) {
+    const href = this.getAttribute('href');
+    
+    // Allow navigation if href is valid
+    if (href && href !== '#') {
+      // Let default link behavior work
+      return true;
+    }
+    
+    e.preventDefault();
+  });
+});
+
         // Global Variables
         let currentSlide = 0;
         const totalSlides = 7;
